@@ -2,6 +2,7 @@ package main
 
 import (
 	"user-api/configs"
+	"user-api/routes"
 
 	"github.com/labstack/echo/v4"
 )
@@ -18,6 +19,8 @@ func main()  {
    defer md.Disconnect()
 	
 
+   //routes
+   routes.UserRole(e) 
 
 
 
