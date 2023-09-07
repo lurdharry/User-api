@@ -10,12 +10,7 @@ import (
 )
 
 
-type MongoDriver struct {
-	Client *mongo.Client
-}
-
-
-func (m *MongoDriver) Connect() error  {
+func  Connect() *mongo.Client  {
 
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
     opts := options.Client().ApplyURI(EnvMongoURI()).SetServerAPIOptions(serverAPI)
@@ -28,6 +23,7 @@ func (m *MongoDriver) Connect() error  {
 
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
     _, errg := mongo.Connect(ctx,opts)
+
     if errg != nil {
         log.Fatal(errg)
     }
@@ -38,17 +34,19 @@ func (m *MongoDriver) Connect() error  {
         log.Fatal(err)
     }
 
-	m.Client = client
+ 
 
 	log.Println("Connected to MongoDB...")
-	return nil
+	return client
 }
 
 
-func (m *MongoDriver) Disconnect() error  {
-   if err := m.Client.Disconnect(context.TODO()); err != nil {
-	return err
-   }
-   log.Println("Disconnected from MongoDB...")
-   return nil
+
+// //Client instance
+var DB *mongo.Client = Connect()
+
+//getting database collections
+func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+    collection := client.Database("user-api-golang").Collection(collectionName)
+    return collection
 }
