@@ -7,23 +7,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-
-
-func main()  {
+func main() {
 	e := echo.New()
-
-
-
 
 	// Create Mongo connection
 	configs.Connect()
 	// Close connection after main
-//    defer md.Disconnect()
-	
+	//    defer md.Disconnect()
 
-   //routes
-   routes.UserRole(e) 
-
+	//routes
+	routes.UserRole(e)
 
 	e.Logger.Fatal(e.Start(":6000"))
 }
